@@ -1,0 +1,112 @@
+<p-panel styleClass="form-group" class="filters portlet light bordered margin-bottom-25" [toggleable]="true"
+  collapsed="false">
+  <p-header>
+    <span>Filtrar Registros</span>
+  </p-header>
+
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <div class="ui-g-12 ui-md-4 ui-lg-3">
+        <label>Cliente</label>
+        <p-autoComplete [(ngModel)]="cliente" minLength=3 [suggestions]="clientes" field="nome"
+          (completeMethod)="pesquisaCliente($event)" forceSelection="true" (onSelect)="selecionado($event)">
+          <ng-template let-c pTemplate="item">
+            <div class="ui-helper-clearfix">
+              <div>{{ c.codigo }} - {{ c.nome }} - {{ c.cnpj }} - {{ c.cidade }}</div>
+            </div>
+          </ng-template>
+        </p-autoComplete>
+      </div>
+
+      <div class="ui-g-12 ui-md-4 ui-lg-3">
+        <label>Projeto</label>
+        <p-autoComplete [(ngModel)]="projeto" [suggestions]="results" (completeMethod)="search($event)"
+          [disabled]="true"></p-autoComplete>
+      </div>
+      <div class="ui-g-12 ui-md-4 ui-lg-3">
+        <label>Cidade</label>
+        <p-autoComplete [(ngModel)]="text" [suggestions]="results" (completeMethod)="search($event)" [disabled]="true">
+        </p-autoComplete>
+      </div>
+      <div class="ui-g-12 ui-md-4 ui-lg-3">
+        <label>Destino</label>
+        <p-autoComplete [(ngModel)]="text" [suggestions]="results" (completeMethod)="search($event)" [disabled]="true">
+        </p-autoComplete>
+      </div>
+
+      <!--
+      <div class="ui-g-12 col-md-4 col-lg-3">
+        <div class="form-group">
+          <label class="control-label">Data da viagem</label>
+          <div class="input-group">
+            <p-calendar id="vacancies-opening-date-initial" ui-mask="99/99/9999" autocomplete="off" type="text"
+              class="form-control date-picker ng-pristine ng-untouched ng-valid ng-empty ng-valid-mask"
+              ng-model="vm.dateCreationFrom" ng-change="vm.dateChanged()" aria-invalid="false" placeholder="__/__/____">
+            </p-calendar>
+            <span class="input-group-addon">até</span>
+            <p-calendar id="vacancies-opening-date-end" ui-mask="99/99/9999" autocomplete="off" type="text"
+              class="form-control date-picker ng-pristine ng-untouched ng-valid ng-empty ng-valid-mask"
+              ng-model-options="{ updateOn: 'default blur' }" ng-model="vm.dateCreationTo" ng-change="vm.dateChanged()"
+              aria-invalid="false" placeholder="__/__/____"></p-calendar>
+          </div>
+        </div>
+      </div>
+      -->
+    </div>
+    <button id="filtrar" type="button" pButton label="Filtrar" (click)="filtrar($event)" [disabled]="!cliente"></button>
+  </div>
+
+</p-panel>
+
+<p-panel>
+  <p-header class="portlet portlet-title">
+    Lista de RDV's
+  </p-header>
+
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <button id="add" type="button" pButton label="Adicionar" [routerLink]="'/cadastro'"></button>
+      <button id="edit" type="button" pButton label="Editar" [routerLink]="['/cadastro', codigoRdv]"
+        class="ui-button-secondary" [disabled]="!selected" (click)="onEditClick()"></button>
+      <button id="delete" type="button" class="ui-button-secondary" pButton label="Deletar" (click)="onDeleteClick()"
+        [disabled]="!selected"></button>
+    </div>
+  </div>
+
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <p-table #dt [value]="rdvs" dataKey="codigoRdv" selectionMode="single" scrollable="true" resizableColumns="true"
+        class="sds-list ng-star-inserted" sortMode="multiple" reorderableColumns="true" [rows]="10" [paginator]="true"
+        [totalRecords]="totalRdvs" [(selection)]="selected" [responsive]="true" (onRowSelect)='onRowSelect(selected)'>
+        <ng-template pTemplate="header" class="hidden-xs">
+          <tr>
+            <th width="10%">Código</th>
+            <th width="50%">Cliente</th>
+            <th width="20%">Destino</th>
+            <th width="10%">Situação</th>
+            <th width="10%">Data Cadastro</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rdv>
+          <tr [pSelectableRow]="rdv">
+            <td width="10%">{{ rdv.codigoRdv }}</td>
+            <td width="50%">{{ rdv.nomeCliente }}</td>
+            <td width="20%">{{ rdv.cidadeCliente }}</td>
+            <td width="10%">{{ rdv.situacaoRdv }}</td>
+            <td width="10%">{{ rdv.dataCadastroRdv }}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage" let-columns>
+          <tr>
+            <td>
+              Nenhuma despesa cadastrada
+            </td>
+          </tr>
+        </ng-template>
+        <p-paginator [rows]="10" [totalRecords]="totalRdvs"></p-paginator>
+      </p-table>
+      {{ selected | json }}
+    </div>
+  </div>
+
+</p-panel>
