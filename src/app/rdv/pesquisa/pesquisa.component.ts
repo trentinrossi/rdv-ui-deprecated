@@ -18,12 +18,14 @@ export class PesquisaComponent implements OnInit {
   selected: Rdv;
   totalRdvs: number;
   codigoRdv: number;
+  loading: boolean;
 
   constructor(
     private service: RdvService
   ) { }
 
   ngOnInit() {
+    this.loading = true;
     this.getDadosUsuario();
   }
 
@@ -47,6 +49,7 @@ export class PesquisaComponent implements OnInit {
     this.service.getTodosRdvs(this.requestRdv).subscribe(data => {
       this.rdvs = data;
       this.totalRdvs = this.rdvs.length;
+      this.loading = false;
     });
   }
 

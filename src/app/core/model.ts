@@ -5,6 +5,11 @@ export class Cliente {
   cidade: string;
 }
 
+export class Empresa {
+  codigoEmpresa: number;
+  nomeEmpresa: string;
+}
+
 export class Rdv {
   codigoEmpresa: number;
   nomeEmpresa: string;
@@ -45,4 +50,9 @@ export class RdvRequestBody {
   nomeUsuarioLogado: string;
   codigoCliente: number;
   codigoProjeto: number;
+}
+
+export class RdvRequestByPrimaryKey {
+  nomeUsuarioLogado: string;
+  codigoEmpresa: number;
 }

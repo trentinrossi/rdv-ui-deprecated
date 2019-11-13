@@ -1,55 +1,60 @@
-<form #f="ngForm" autocomplete="off" (ngSubmit)="salvar(f)">
-  <div class="ui-g">
+{{ diagnostic }}
+<form #rdvForm="ngForm" autocomplete="off" (ngSubmit)="salvar(f)">
+  <div class="ui-g container">
     <div class="ui-g-12">
 
       <p-panel>
         <p-header>Cadastro das despesas de viagem</p-header>
         <p-tabView>
-          <p-tabPanel header="Cadastro">
+          <p-tabPanel header="Cadastro" class="form-group">
             <div class="ui-g">
 
               <div class="ui-g-12">
                 <div class="ui-g-12 ui-md-3 ui-fluid">
-                  <label class="control-label">Código do RDV</label>
-                  <input pInputText type="text" name="codigoRdv" [(ngModel)]="rdv.codigoRdv" #codigoRdv="ngModel"
-                    [disabled]="true">
-                </div>
-                <div class="ui-g-12 ui-md-3 ui-fluid">
-                  <label class="control-label">Tabela Parâmetros</label>
-                  <p-autoComplete name="nomeTabelaParametros" field="nomeTabelaParametros" [disabled]="true">
-                  </p-autoComplete>
-                </div>
-                <div class="ui-g-12 ui-md-3 ui-fluid">
-                  <label class="control-label">Tabela Preço KM</label>
-                  <p-autoComplete name="nomeTabelaPrecoQuilometragem" field="nomeTabelaPrecoQuilometragem"
+                  <label for="codigoRdv">Código do RDV</label>
+                  <p-autoComplete class="form-control" id="codigoRdv" name="codigoRdv" [(ngModel)]="rdv.codigoRdv"
                     [disabled]="true">
                   </p-autoComplete>
                 </div>
                 <div class="ui-g-12 ui-md-3 ui-fluid">
-                  <label class="control-label">Situação RDV</label>
-                  <p-autoComplete name="situacaoRdv" field="situacaoRdv" [disabled]="true">
+                  <label for="nomeTabelaParametros">Tabela Parâmetros</label>
+                  <p-autoComplete class="form-control" id="nomeTabelaParametros" name="nomeTabelaParametros"
+                    [(ngModel)]="rdv.nomeTabelaParametros" [disabled]="true">
+                  </p-autoComplete>
+                </div>
+                <div class="ui-g-12 ui-md-3 ui-fluid">
+                  <label for="nomeTabelaPrecoQuilometragem">Tabela Preço KM</label>
+                  <p-autoComplete class="form-control" id="nomeTabelaPrecoQuilometragem"
+                    name="nomeTabelaPrecoQuilometragem" [(ngModel)]="rdv.nomeTabelaPrecoQuilometragem"
+                    [disabled]="true">
+                  </p-autoComplete>
+                </div>
+                <div class="ui-g-12 ui-md-3 ui-fluid">
+                  <label for="situacaoRdv">Situação RDV</label>
+                  <p-autoComplete class="form-control" id="situacaoRdv" name="situacaoRdv" [(ngModel)]="rdv.situacaoRdv"
+                    [disabled]="true">
                   </p-autoComplete>
                 </div>
               </div>
 
               <div class="ui-g-12">
                 <div class="ui-g-12 ui-md-6 ui-fluid">
-                  <label class="control-label">Empresa</label>
-                  <p-autoComplete minLength=3 [suggestions]="clientes" field="cliente"
-                    (completeMethod)="pesquisaCliente($event)" forceSelection="true"
-                    (onSelect)="clienteSelecionado($event)" [dropdown]="true">
+                  <label for="nomeEmpresa">Empresa</label>
+                  <p-autoComplete id="nomeEmpresa" class="form-control" minLength=3 [suggestions]="empresas"
+                    (completeMethod)="pesquisaEmpresa($event)" [(ngModel)]="rdv.nomeEmpresa" name="nomeEmpresa"
+                    (onSelect)="empresaSelecionadaEvent($event)" [dropdown]="true" required>
                     <ng-template let-c pTemplate="item">
                       <div class="ui-helper-clearfix">
-                        <div>{{ c.codigo }} - {{ c.nome }} - {{ c.cnpj }} - {{ c.cidade }}</div>
+                        <div>{{ c.codigoEmpresa }} - {{ c.nomeEmpresa }}</div>
                       </div>
                     </ng-template>
                   </p-autoComplete>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-fluid">
-                  <label class="control-label">Cliente</label>
-                  <p-autoComplete minLength=3 [suggestions]="clientes" field="cliente"
-                    (completeMethod)="pesquisaCliente($event)" forceSelection="true"
-                    (onSelect)="clienteSelecionado($event)" [dropdown]="true">
+                  <label for="cliente">Cliente</label>
+                  <p-autoComplete id="cliente" minLength=3 [suggestions]="clientes" [(ngModel)]="rdv.nomeCliente"
+                    (completeMethod)="pesquisaCliente($event)" (onSelect)="clienteSelecionadoEvent($event)"
+                    name="nomeCliente" dropdownMode="current" [dropdown]="true" required>
                     <ng-template let-c pTemplate="item">
                       <div class="ui-helper-clearfix">
                         <div>{{ c.codigo }} - {{ c.nome }} - {{ c.cnpj }} - {{ c.cidade }}</div>
@@ -60,41 +65,44 @@
                 <div class="ui-g-12 ui-md-3 ui-fluid">
                   <label class="control-label">Data Inicial</label>
                   <p-calendar id="vacancies-opening-date-end" ui-mask="99/99/9999" placeholder="__/__/____"
-                    showButtonBar="true" dateFormat="dd/mm/yy" showIcon="true"></p-calendar>
+                    showButtonBar="true" dateFormat="dd/mm/yy" showIcon="true" [(ngModel)]="rdv.dataInicioViagem"
+                    name="dataInicioViagem" required></p-calendar>
                 </div>
                 <div class="ui-g-12 ui-md-3 ui-fluid">
                   <label class="control-label">Data Final</label>
                   <p-calendar id="vacancies-opening-date-end" ui-mask="99/99/9999" placeholder="__/__/____"
-                    showButtonBar="true" dateFormat="dd/mm/yy" showIcon="true"></p-calendar>
+                    showButtonBar="true" dateFormat="dd/mm/yy" showIcon="true" [(ngModel)]="rdv.dataFinalViagem"
+                    name="dataFinalViagem" required></p-calendar>
                 </div>
                 <div class="ui-g-12 ui-md-2 ui-fluid">
-                  <label class="control-label">Tipo DAG/RAT Relacionada</label>
-                  <p-dropdown name="tipo" [options]="tipoDatRatRelacionada" [(ngModel)]="rdv.tipoDatRatRelacionada"
-                    #tipoDatRatRelacionada="ngModel">
+                  <label for="tipoDatRatRelacionada">Tipo DAG/RAT Relacionada</label>
+                  <p-dropdown id="tipoDatRatRelacionada" name="tipoDatRatRelacionada" [options]="tipoDagRatRelacionada"
+                    [(ngModel)]="rdv.tipoDagRatRelacionada" optionLabel="label">
                   </p-dropdown>
                 </div>
                 <div class="ui-g-12 ui-md-4 ui-fluid">
-                  <label class="control-label">Número</label>
-                  <p-autoComplete name="nomeTabelaParametros" field="nomeTabelaParametros" [disabled]="true">
+                  <label for="codigoDagRatRelacionada">Número</label>
+                  <p-autoComplete class="form-control" id="codigoDagRatRelacionada" name="codigoDagRatRelacionada"
+                    [(ngModel)]="rdv.codigoDagRatRelacionada">
                   </p-autoComplete>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-fluid">
                   <label class="control-label">Objetivo</label>
-                  <textarea pInputTextarea></textarea>
+                  <textarea pInputTextarea [(ngModel)]="rdv.objetivoRdv" name="objetivoRdv"></textarea>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-fluid">
                   <label class="control-label">Itinerário</label>
-                  <textarea pInputTextarea></textarea>
+                  <textarea pInputTextarea [(ngModel)]="rdv.nomeItinerario" name="nomeItinerario"></textarea>
                 </div>
               </div>
 
-
               <div class="ui-g-12">
-                <button id="add" type="button" pButton label="Enviar para Reembolso/Faturamento"
-                  [routerLink]="'/cadastro'"></button>
-                <button id="edit" type="button" class="ui-button-secondary" pButton label="Salvar como rascunho"
-                  [disabled]="!selected" (click)="onEditClick()"></button>
-                <button id="edit" pButton type="button" class="ui-button-text-only ui-button-link">Cancelar</button>
+                <button id="enviarParaReembolso" type="submit" class="btn btn-success" pButton
+                  label="Enviar para Reembolso/Faturamento" [routerLink]="'/cadastro'"
+                  [disabled]="!rdvForm.form.valid"></button>
+                <button id="salvarRascunho" type="button" class="ui-button-secondary" pButton
+                  label="Salvar como rascunho" [disabled]="!selected" (click)="onEditClick()"></button>
+                <button id="cancelar" pButton type="button" class="ui-button-text-only ui-button-link">Cancelar</button>
               </div>
             </div>
           </p-tabPanel>
@@ -102,10 +110,32 @@
           <p-tabPanel header="Reembolso">
             <div class="ui-g">
               <div class="ui-g-12">
-                conteudo
+                <div class="ui-g-12 ui-md-3 ui-fluid">
+                  <label class="control-label">Número Título</label>
+                  <p-autoComplete name="reembolsoNumeroTitulo" field="reembolsoNumeroTitulo" [(ngModel)]="rdv"
+                    [disabled]="true">
+                  </p-autoComplete>
+                </div>
+                <div class="ui-g-12 ui-md-3 ui-fluid">
+                  <label class="control-label">Tipo do Título</label>
+                  <p-autoComplete name="reembolsoTipoTitulo" field="reembolsoTipoTitulo" [(ngModel)]="rdv"
+                    [disabled]="true">
+                  </p-autoComplete>
+                </div>
+                <div class="ui-g-12 ui-md-3 ui-fluid">
+                  <label class="control-label">CCódigo Consultor como Fornecedor</label>
+                  <p-autoComplete name="reembolsoCodigoFornecedor" field="reembolsoCodigoFornecedor" [(ngModel)]="rdv"
+                    [disabled]="true">
+                  </p-autoComplete>
+                </div>
+                <div class="ui-g-12 ui-md-3 ui-fluid">
+                  <label class="control-label">Valor KM considerado</label>
+                  <p-autoComplete name="reembolsoValorQuilometro" field="reembolsoValorQuilometro" [(ngModel)]="rdv"
+                    [disabled]="true">
+                  </p-autoComplete>
+                </div>
               </div>
             </div>
-
           </p-tabPanel>
 
           <p-tabPanel header="Faturamento">
@@ -113,22 +143,26 @@
               <div class="ui-g-12">
                 <div class="ui-g-12 ui-md-3 ui-fluid">
                   <label class="control-label">Pedido</label>
-                  <p-autoComplete name="nomeTabelaParametros" field="nomeTabelaParametros" [disabled]="true">
+                  <p-autoComplete name="faturamentoCodigoPedido" field="faturamentoCodigoPedido" [(ngModel)]="rdv"
+                    [disabled]="true">
                   </p-autoComplete>
                 </div>
                 <div class="ui-g-12 ui-md-3 ui-fluid">
                   <label class="control-label">Série NF</label>
-                  <p-autoComplete name="nomeTabelaParametros" field="nomeTabelaParametros" [disabled]="true">
+                  <p-autoComplete name="faturamentoSerieNota" field="faturamentoSerieNota" [(ngModel)]="rdv"
+                    [disabled]="true">
                   </p-autoComplete>
                 </div>
                 <div class="ui-g-12 ui-md-3 ui-fluid">
                   <label class="control-label">Número NF</label>
-                  <p-autoComplete name="nomeTabelaParametros" field="nomeTabelaParametros" [disabled]="true">
+                  <p-autoComplete name="faturamentoNumeroNota" field="faturamentoNumeroNota" [(ngModel)]="rdv"
+                    [disabled]="true">
                   </p-autoComplete>
                 </div>
                 <div class="ui-g-12 ui-md-3 ui-fluid">
                   <label class="control-label">Data Emissão</label>
-                  <p-autoComplete name="nomeTabelaParametros" field="nomeTabelaParametros" [disabled]="true">
+                  <p-autoComplete name="faturamentoDataEmissaoNota" field="faturamentoDataEmissaoNota" [(ngModel)]="rdv"
+                    [disabled]="true">
                   </p-autoComplete>
                 </div>
               </div>
@@ -145,8 +179,8 @@
         <p-header>Despesas</p-header>
         <div class="ui-g">
           <div class="ui-g-12">
-            <button id="add" type="button" pButton label="Adicionar" [routerLink]="'/cadastro'"></button>
-            <button id="edit" type="button" class="ui-button-secondary" pButton label="Editar" [disabled]="!selected"
+            <button id="addRdv" type="button" pButton label="Adicionar" [routerLink]="'/cadastro'"></button>
+            <button id="editRdv" type="button" class="ui-button-secondary" pButton label="Editar" [disabled]="!selected"
               (click)="onEditClick()"></button>
             <button id="delete" type="button" class="ui-button-secondary" pButton label="Deletar"
               (click)="onDeleteClick()" [disabled]="!selected"></button>

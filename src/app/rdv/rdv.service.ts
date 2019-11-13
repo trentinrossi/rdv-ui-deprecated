@@ -1,4 +1,4 @@
-import { Cliente, Rdv, RdvRequestBody } from './../core/model';
+import { Cliente, Rdv, RdvRequestBody, RdvRequestByPrimaryKey } from './../core/model';
 import { RdvHttp } from './rdv-http';
 import { environment } from './../../environments/environment.prod';
 import { service, user } from '@seniorsistemas/senior-platform-data';
@@ -25,34 +25,38 @@ export class RdvService {
     this.rdvUrl = `${environment.apiUrl}`;
   }
 
+  /**
+   * Chamadas para o cliente
+   */
+  // Pesquisa o cliente
   pesquisarCliente(like: any): Promise<any> {
     return this.http.get<any>(`${this.rdvUrl}/clientes/${like}`)
       .toPromise()
       .then(response => response);
   }
 
+  // Retorna conforme o código
   getCliente(codigo: number): Observable<Cliente> {
     const url = `${this.rdvUrl}/clientes/${codigo}`;
     return this.http.get<Cliente>(url);
   }
 
+  /**
+   * Chamadas para o RDV
+   */
+  // Retorna todos os RDV's
   getTodosRdvs(usuarioLogado: RdvRequestBody): Observable<any> {
     return this.http.post<any>(`${this.rdvUrl}/rdv`, usuarioLogado, httpOptions);
   }
 
-  getRdvByPromise(codigoRdv: number): Promise<Rdv> {
-    return this.http.get<Rdv>(`${this.rdvUrl}/rdv/${codigoRdv}`)
-      .toPromise()
-      .then(response => {
-        const rdv = response;
-        console.log('RDV Service:' + rdv);
-        // this.converterStringsParaDatas([casal]);
-        // this.converterStringsParaFilhos(casal.filhos);
-
-        return rdv;
-      });
+  // Retorna o RDV pela chave primária
+  getRdvByPrimaryKey(codigoRdv: number, parameters: RdvRequestByPrimaryKey): Observable<any> {
+    return this.http.post<any>(`${this.rdvUrl}/rdv/${codigoRdv}`, parameters, httpOptions);
   }
 
+  /**
+   * Chamadas para plataforma
+   */
   getDadosUsuario(): Observable<any> {
     return forkJoin(
       from(service.getRestUrl()),

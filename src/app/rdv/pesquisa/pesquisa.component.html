@@ -9,7 +9,7 @@
       <div class="ui-g-12 ui-md-4 ui-lg-3">
         <label>Cliente</label>
         <p-autoComplete [(ngModel)]="cliente" minLength=3 [suggestions]="clientes" field="nome"
-          (completeMethod)="pesquisaCliente($event)" forceSelection="true" (onSelect)="selecionado($event)">
+          (completeMethod)="pesquisaCliente($event)" forceSelection="true">
           <ng-template let-c pTemplate="item">
             <div class="ui-helper-clearfix">
               <div>{{ c.codigo }} - {{ c.nome }} - {{ c.cnpj }} - {{ c.cidade }}</div>
@@ -65,7 +65,7 @@
 
   <div class="ui-g">
     <div class="ui-g-12">
-      <button id="add" type="button" pButton label="Adicionar" [routerLink]="'/cadastro'"></button>
+      <button id="add" type="button" pButton label="Adicionar" [routerLink]="'/cadastro/novo'"></button>
       <button id="edit" type="button" pButton label="Editar" [routerLink]="['/cadastro', codigoRdv]"
         class="ui-button-secondary" [disabled]="!selected" (click)="onEditClick()"></button>
       <button id="delete" type="button" class="ui-button-secondary" pButton label="Deletar" (click)="onDeleteClick()"
@@ -77,7 +77,7 @@
     <div class="ui-g-12">
       <p-table #dt [value]="rdvs" dataKey="codigoRdv" selectionMode="single" scrollable="true" resizableColumns="true"
         class="sds-list ng-star-inserted" sortMode="multiple" reorderableColumns="true" [rows]="10" [paginator]="true"
-        [totalRecords]="totalRdvs" [(selection)]="selected" [responsive]="true" (onRowSelect)='onRowSelect(selected)'>
+        [totalRecords]="totalRdvs" [(selection)]="selected" [responsive]="true" (onRowSelect)='onRowSelect(selected)' [loading]="loading">
         <ng-template pTemplate="header" class="hidden-xs">
           <tr>
             <th width="10%">Código</th>
@@ -105,7 +105,7 @@
         </ng-template>
         <p-paginator [rows]="10" [totalRecords]="totalRdvs"></p-paginator>
       </p-table>
-      {{ selected | json }}
+      <!--{{ selected | json }}-->
     </div>
   </div>
 
